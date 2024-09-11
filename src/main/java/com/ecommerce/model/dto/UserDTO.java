@@ -8,11 +8,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class UserDTO extends AbstractDTO {
     private Long id;
     private String address;
@@ -21,7 +17,6 @@ public class UserDTO extends AbstractDTO {
     private String fullName;
     private String password;
     private String phone;
-    private boolean active;
     private Long roleId;
     private List<Long> orderIds;
     private List<Long> commentIds;

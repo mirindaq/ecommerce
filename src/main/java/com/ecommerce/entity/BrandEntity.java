@@ -16,6 +16,9 @@ public class BrandEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
     @OneToMany( mappedBy = "brand", fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.PERSIST},
             orphanRemoval = true)

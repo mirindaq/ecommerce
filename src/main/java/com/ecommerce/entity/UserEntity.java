@@ -43,17 +43,17 @@ public class UserEntity extends BaseEntity {
     @JoinColumn( name = "role_id")
     private RoleEntity role;
 
-    @OneToMany( mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    @OneToMany( mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<OrderEntity> orders;
 
-    @OneToMany( mappedBy = "userComment", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    @OneToMany( mappedBy = "userComment", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<CommentEntity> commentList;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private CartEntity cart;
 
-    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<WishListEntity> wishList;
 
 

@@ -15,6 +15,9 @@ public class AttributeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String name;
+
     @OneToMany( mappedBy = "attribute", fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.PERSIST},
             orphanRemoval = true)
