@@ -18,6 +18,6 @@ public class ProductDTO extends AbstractDTO {
     private String brandName;
 //    private Long categoryId;
     private String categoryName;
-    private List<AttributeDetailDTO> attributeList;
+    private List<Map<String,String>> attributeList;
 
 }

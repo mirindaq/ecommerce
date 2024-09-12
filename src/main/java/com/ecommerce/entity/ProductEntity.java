@@ -38,24 +38,20 @@ public class ProductEntity extends BaseEntity {
     private boolean active;
 
     @OneToMany( mappedBy = "productWishList" , fetch = FetchType.LAZY,
-            cascade = { CascadeType.MERGE, CascadeType.PERSIST},
-            orphanRemoval = true)
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<WishListEntity> wishlist;
 
     @OneToMany( mappedBy = "productComment", fetch = FetchType.LAZY,
-            cascade = { CascadeType.MERGE, CascadeType.PERSIST},
-            orphanRemoval = true)
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<CommentEntity> commentList;
 
     @OneToMany( mappedBy = "productOrder", fetch = FetchType.LAZY,
-            cascade = { CascadeType.MERGE, CascadeType.PERSIST},
-             orphanRemoval = true)
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<OrderDetailEntity> orderDetailEntities;
 
 
     @OneToMany( mappedBy = "productCart", fetch = FetchType.LAZY,
-            cascade = { CascadeType.MERGE, CascadeType.PERSIST},
-            orphanRemoval = true)
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<CartDetailEntity> cartDetailEntities;
 
     @ManyToOne

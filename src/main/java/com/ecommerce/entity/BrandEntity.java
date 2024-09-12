@@ -20,7 +20,10 @@ public class BrandEntity {
     private String name;
 
     @OneToMany( mappedBy = "brand", fetch = FetchType.LAZY,
-            cascade = { CascadeType.MERGE, CascadeType.PERSIST},
-            orphanRemoval = true)
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<ProductEntity> products;
+
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    private List<BrandCategoryEntity> brandCategoryEntities;
 }
