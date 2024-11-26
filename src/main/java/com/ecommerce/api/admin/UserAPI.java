@@ -1,6 +1,7 @@
 package com.ecommerce.api.admin;
 
 import com.ecommerce.model.dto.UserDTO;
+import com.ecommerce.model.response.Response;
 import com.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,9 @@ public class UserAPI {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDTO> addOrUpdateUser(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.addOrUpdateUser(userDTO));
+    public Response<UserDTO> addOrUpdateUser(@RequestBody UserDTO userDTO) {
+        userService.addOrUpdateUser(userDTO);
+        return new Response<>("ok",userDTO);
     }
 
 }
