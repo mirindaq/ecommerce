@@ -11,8 +11,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -65,8 +67,43 @@ public class ProductConverter {
     }
 
     public ProductDTO fromEntityToDTO(ProductEntity entity) {
+        ProductDTO productDTO = new ProductDTO();
 
-        return modelMapper.map(entity, ProductDTO.class);
+        productDTO.setCreatedBy(entity.getCreatedBy());
+        productDTO.setCreatedDate(entity.getCreatedDate());
+        productDTO.setModifiedBy(entity.getModifiedBy());
+        productDTO.setModifiedDate(entity.getModifiedDate());
+        productDTO.setId(entity.getId());
+        productDTO.setName(entity.getName());
+        productDTO.setPrice(entity.getPrice());
+        productDTO.setStock(entity.getStock());
+        productDTO.setDiscount(entity.getDiscount());
+        productDTO.setDescription(entity.getDescription());
+        productDTO.setImage(entity.getImage());
+
+        if (entity.getBrand() != null) {
+            productDTO.setBrandName(entity.getBrand().getName());
+        }
+
+        if (entity.getCategory() != null) {
+            productDTO.setCategoryName(entity.getCategory().getName());
+        }
+
+        if (entity.getAttributeList() != null) {
+            List<Map<String, String>> attributes = entity.getAttributeList().stream()
+                    .map(attributeDetail -> {
+                        Map<String, String> attributeMap = Map.of(
+                                "name", attributeDetail.getAttribute().getName(),
+                                "value", attributeDetail.getValue()
+                        );
+                        return attributeMap;
+                    })
+                    .collect(Collectors.toList());
+            productDTO.setAttributeList(attributes);
+        }
+
+        return productDTO;
     }
+
 
 }

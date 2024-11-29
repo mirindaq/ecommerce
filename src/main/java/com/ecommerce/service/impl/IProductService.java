@@ -36,4 +36,9 @@ public class IProductService implements ProductService {
         return productDTO;
 
     }
+
+    @Override
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream().map(productConverter::fromEntityToDTO).collect(Collectors.toList());
+    }
 }

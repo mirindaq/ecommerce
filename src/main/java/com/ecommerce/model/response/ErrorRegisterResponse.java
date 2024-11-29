@@ -1,4 +1,4 @@
-package com.ecommerce.model.request;
+package com.ecommerce.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class    ErrorRegisterResponse {
     private String email;
-    private String password;
 }

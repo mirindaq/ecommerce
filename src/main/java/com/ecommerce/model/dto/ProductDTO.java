@@ -14,9 +14,7 @@ public class ProductDTO extends AbstractDTO {
     private Double discount;
     private String description;
     private String image;
-//    private Long brandId;
     private String brandName;
-//    private Long categoryId;
     private String categoryName;
     private List<Map<String,String>> attributeList;
 

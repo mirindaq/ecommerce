@@ -3,12 +3,15 @@ package com.ecommerce.service.impl;
 import com.ecommerce.converter.UserConverter;
 import com.ecommerce.entity.RoleEntity;
 import com.ecommerce.entity.UserEntity;
+import com.ecommerce.exception.handle.EmailAlreadyExistsException;
 import com.ecommerce.model.dto.UserDTO;
 import com.ecommerce.model.request.RegisterRequest;
+import com.ecommerce.model.response.Response;
 import com.ecommerce.repository.RoleRepository;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,18 +37,21 @@ public class IUserService implements UserService {
     }
 
     @Override
-    public UserDTO findUserByEmail(String email) {
+    public UserEntity findUserByEmail(String email) {
         UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
         if ( userEntity == null) return null;
-        return userConverter.fromEntityToDTO(userEntity);
+        return userEntity;
     }
 
     @Override
     public void register(RegisterRequest registerRequest) {
+        if (findUserByEmail(registerRequest.getEmail()) != null) {
+            throw new EmailAlreadyExistsException("Email đã tồn tại");
+        }
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
         RoleEntity role = roleRepository.findByName("USER");
         UserEntity newUser = new UserEntity();
-        newUser.setEmail(registerRequest.getUsername());
+        newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(encodedPassword);
         newUser.setRole(role);
         newUser.setActive(true);

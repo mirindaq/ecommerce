@@ -7,6 +7,7 @@ import com.ecommerce.model.dto.UserDTO;
 import com.ecommerce.model.request.LoginRequest;
 import com.ecommerce.model.request.RegisterRequest;
 import com.ecommerce.model.response.LoginResponse;
+import com.ecommerce.model.response.RegisterResponse;
 import com.ecommerce.model.response.Response;
 import com.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class LoginAPI {
         Authentication authentication;
         try {
             authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         } catch (AuthenticationException exception) {
             return new Response<Object>("Bad credentials", exception );
         }
@@ -57,21 +58,19 @@ public class LoginAPI {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        UserDTO userDTO = userService.findUserByEmail(userDetails.getUsername());
-        LoginResponse response = new LoginResponse( jwtToken,userDTO,roles);
+        UserEntity user = userService.findUserByEmail(userDetails.getUsername());
+        LoginResponse response = new LoginResponse( jwtToken,user,roles);
 
         return new Response<>( "Đăng nhập thành công", response);
     }
 
     @PostMapping("/register")
     public Response<?> registerUser(@RequestBody RegisterRequest registerRequest) {
-        if (userService.findUserByEmail(registerRequest.getUsername()) != null ) {
-            return new Response<>("Email đã tồn tại, vui lòng chọn email khác", HttpStatus.BAD_REQUEST);
-        }
         userService.register(registerRequest);
-        UserDTO newUser = userService.findUserByEmail(registerRequest.getUsername());
+        UserEntity newUser = userService.findUserByEmail(registerRequest.getEmail());
+        RegisterResponse response = new RegisterResponse(newUser);
 
-        return new Response<>("Đăng ký thành công", newUser);
+        return new Response<>("Đăng ký thành công", response);
     }
 }
 

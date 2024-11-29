@@ -3,6 +3,7 @@ package com.ecommerce.model.dto;
 import com.ecommerce.entity.CartEntity;
 import com.ecommerce.entity.OrderEntity;
 import com.ecommerce.entity.RoleEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,8 +19,4 @@ public class UserDTO extends AbstractDTO {
     private String password;
     private String phone;
     private Long roleId;
-    private List<Long> orderIds;
-    private List<Long> commentIds;
-    private Long cartId;
-    private List<Long> wishListIds;
 }

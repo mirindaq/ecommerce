@@ -1,6 +1,7 @@
 package com.ecommerce.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class UserEntity extends BaseEntity {
     private String fullName;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @Column
@@ -41,19 +43,24 @@ public class UserEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn( name = "role_id")
+    @JsonIgnore
     private RoleEntity role;
 
     @OneToMany( mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnore
     private List<OrderEntity> orders;
 
     @OneToMany( mappedBy = "userComment", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnore
     private List<CommentEntity> commentList;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnore
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private CartEntity cart;
 
     @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnore
     private List<WishListEntity> wishList;
 
 

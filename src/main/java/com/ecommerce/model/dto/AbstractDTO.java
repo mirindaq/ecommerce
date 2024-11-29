@@ -10,7 +10,6 @@ public class AbstractDTO<T> implements Serializable {
     private String createdBy;
     private Date modifiedDate;
     private String modifiedBy;
-    private int maxPageItems = 2;
 
     public Date getCreatedDate() {
         return createdDate;
@@ -44,14 +43,6 @@ public class AbstractDTO<T> implements Serializable {
         this.modifiedBy = modifiedBy;
     }
 
-
-    public int getMaxPageItems() {
-        return maxPageItems;
-    }
-
-    public void setMaxPageItems(int maxPageItems) {
-        this.maxPageItems = maxPageItems;
-    }
 
 
 }
