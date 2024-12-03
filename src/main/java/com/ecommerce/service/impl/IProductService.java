@@ -6,6 +6,7 @@ import com.ecommerce.entity.AttributeEntity;
 import com.ecommerce.entity.BrandEntity;
 import com.ecommerce.entity.ProductEntity;
 import com.ecommerce.model.dto.ProductDTO;
+import com.ecommerce.model.dto.ProductSearchCriteria;
 import com.ecommerce.repository.AttributeDetailRepository;
 import com.ecommerce.repository.AttributeRepository;
 import com.ecommerce.repository.ProductRepository;
@@ -40,5 +41,18 @@ public class IProductService implements ProductService {
     @Override
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream().map(productConverter::fromEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDTO> searchProducts(ProductSearchCriteria criteria) {
+        List<ProductEntity> entityList = productRepository.searchProduct(criteria);
+        return entityList.stream().map(productConverter::fromEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductDTO getProductById(Long id) {
+        ProductEntity productEntity = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return productConverter.fromEntityToDTO(productEntity);
     }
 }

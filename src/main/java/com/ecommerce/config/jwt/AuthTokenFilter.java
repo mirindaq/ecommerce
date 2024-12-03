@@ -48,9 +48,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-//            else if (jwt == null) {
-//                logger.warn("JWT is missing in the Authorization header.");
-//            }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e.getMessage());
         }

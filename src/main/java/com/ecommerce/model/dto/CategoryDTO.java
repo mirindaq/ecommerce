@@ -7,5 +7,6 @@ import java.util.List;
 @Data
 public class CategoryDTO {
     private String name;
-    List<Long> brandsId;
+    private String image;
+    private List<String> listAttribute;
 }

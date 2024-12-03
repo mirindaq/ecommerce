@@ -3,15 +3,13 @@ package com.ecommerce.service.impl;
 import com.ecommerce.converter.UserConverter;
 import com.ecommerce.entity.RoleEntity;
 import com.ecommerce.entity.UserEntity;
-import com.ecommerce.exception.handle.EmailAlreadyExistsException;
+import com.ecommerce.exception.custom.EmailAlreadyExistsException;
 import com.ecommerce.model.dto.UserDTO;
 import com.ecommerce.model.request.RegisterRequest;
-import com.ecommerce.model.response.Response;
 import com.ecommerce.repository.RoleRepository;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +25,7 @@ public class IUserService implements UserService {
 
     @Override
     @Transactional
-    public UserDTO addOrUpdateUser(UserDTO userDTO) {
+    public UserDTO addUser(UserDTO userDTO) {
         UserEntity userEntity = userConverter.fromDTOToEntity(userDTO);
         RoleEntity role = roleRepository.findById(userDTO.getRoleId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -35,6 +33,23 @@ public class IUserService implements UserService {
         userEntity.setActive(true);
         return userConverter.fromEntityToDTO(userRepository.save(userEntity));
     }
+
+    @Override
+    @Transactional
+    public UserDTO updateUser(UserDTO userDTO) {
+        UserEntity userEntity = findUserByEmail(userDTO.getEmail());
+        if (userEntity == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        userEntity.setFullName(userDTO.getFullName());
+        userEntity.setAddress(userDTO.getAddress());
+        userEntity.setPhone(userDTO.getPhone());
+
+
+        return userConverter.fromEntityToDTO(userRepository.save(userEntity));
+    }
+
 
     @Override
     public UserEntity findUserByEmail(String email) {

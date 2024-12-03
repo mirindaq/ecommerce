@@ -3,6 +3,7 @@ package com.ecommerce.api.login;
 import com.ecommerce.config.jwt.JwtUtil;
 import com.ecommerce.entity.RoleEntity;
 import com.ecommerce.entity.UserEntity;
+import com.ecommerce.exception.custom.LoginException;
 import com.ecommerce.model.dto.UserDTO;
 import com.ecommerce.model.request.LoginRequest;
 import com.ecommerce.model.request.RegisterRequest;
@@ -45,7 +46,7 @@ public class LoginAPI {
             authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         } catch (AuthenticationException exception) {
-            return new Response<Object>("Bad credentials", exception );
+            throw new LoginException("Email hoặc mật khẩu không chính xác");
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -61,6 +62,7 @@ public class LoginAPI {
         UserEntity user = userService.findUserByEmail(userDetails.getUsername());
         LoginResponse response = new LoginResponse( jwtToken,user,roles);
 
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         return new Response<>( "Đăng nhập thành công", response);
     }
 
@@ -71,6 +73,11 @@ public class LoginAPI {
         RegisterResponse response = new RegisterResponse(newUser);
 
         return new Response<>("Đăng ký thành công", response);
+    }
+
+    @PostMapping("/logout")
+    public Response<?> logout() {
+        return new Response<>("Success", "User logged out successfully.");
     }
 }
 

@@ -18,6 +18,9 @@ public class CategoryEntity {
     @Column
     private String name;
 
+    @Column
+    private String image;
+
     @OneToMany( mappedBy = "category" , fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<ProductEntity> products;
@@ -25,4 +28,8 @@ public class CategoryEntity {
     @OneToMany( mappedBy = "category" , fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<BrandCategoryEntity> brandCategoryEntities;
+
+    @OneToMany( mappedBy = "category" , fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    private List<AttributeEntity> attributeEntities;
 }

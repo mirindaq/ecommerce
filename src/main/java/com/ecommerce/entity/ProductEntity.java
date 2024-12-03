@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -67,6 +68,9 @@ public class    ProductEntity extends BaseEntity {
             orphanRemoval = true)
     private List<AttributeDetailEntity> attributeList;
 
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImageEntity> productImageEntityList;
 
 
 }

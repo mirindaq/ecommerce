@@ -22,4 +22,7 @@ public class AttributeEntity {
             cascade = { CascadeType.MERGE, CascadeType.PERSIST},
             orphanRemoval = true)
     private List<AttributeDetailEntity> detailEntityList;
+
+    @ManyToOne
+    private CategoryEntity category;
 }

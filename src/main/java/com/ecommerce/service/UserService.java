@@ -5,7 +5,8 @@ import com.ecommerce.model.dto.UserDTO;
 import com.ecommerce.model.request.RegisterRequest;
 
 public interface UserService {
-    UserDTO addOrUpdateUser(UserDTO userDTO);
+    UserDTO addUser(UserDTO userDTO);
+    UserDTO updateUser(UserDTO userDTO);
 
     UserEntity findUserByEmail(String email);
 

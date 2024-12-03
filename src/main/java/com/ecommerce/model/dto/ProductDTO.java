@@ -13,7 +13,7 @@ public class ProductDTO extends AbstractDTO {
     private Integer stock;
     private Double discount;
     private String description;
-    private String image;
+    private List<String> images;
     private String brandName;
     private String categoryName;
     private List<Map<String,String>> attributeList;

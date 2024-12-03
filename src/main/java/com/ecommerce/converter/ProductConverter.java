@@ -40,21 +40,31 @@ public class ProductConverter {
         productEntity.setCategory(category);
         productEntity.setActive(true);
 
+        //set imageList
+        List<ProductImageEntity> images = new ArrayList<>();
+        int check = 0;
+        for ( String image : dto.getImages()) {
+            ProductImageEntity imageEntity = new ProductImageEntity();
+            imageEntity.setUrl(image);
+            imageEntity.setProduct(productEntity);
+            if ( check == 0 ) {
+                imageEntity.setMain(true);
+                check = 1;
+            }
+            else imageEntity.setMain(false);
+            images.add(imageEntity);
+        }
+        productEntity.setProductImageEntityList(images);
+
         //set detail list
         List<AttributeDetailEntity> detailEntityList = new ArrayList<>();
         for (Map<String, String> map : dto.getAttributeList()) {
             String name = map.get("name");
             String value = map.get("value");
 
-            //if attribute is not exist, new
             AttributeEntity attribute = attributeRepository.findByName(name)
-                    .orElseGet(() -> {
-                        AttributeEntity attributeEntity = new AttributeEntity();
-                        attributeEntity.setName(name);
-                        return attributeRepository.save(attributeEntity);
-                    });
+                    .orElseThrow(() -> new RuntimeException("Attribute not found"));
 
-            //new attribute detail
             AttributeDetailEntity attributeDetailEntity = new AttributeDetailEntity();
             attributeDetailEntity.setValue(value);
             attributeDetailEntity.setAttribute(attribute);
@@ -79,7 +89,7 @@ public class ProductConverter {
         productDTO.setStock(entity.getStock());
         productDTO.setDiscount(entity.getDiscount());
         productDTO.setDescription(entity.getDescription());
-        productDTO.setImage(entity.getImage());
+        productDTO.setImages(entity.getProductImageEntityList().stream().map(ProductImageEntity::getUrl).collect(Collectors.toList()));
 
         if (entity.getBrand() != null) {
             productDTO.setBrandName(entity.getBrand().getName());

@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponse {
-    private String access_token;
+    private String accessToken;
     private UserEntity user;
     private List<String> role;
 }

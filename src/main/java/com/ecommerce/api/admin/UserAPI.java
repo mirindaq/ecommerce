@@ -16,9 +16,11 @@ public class UserAPI {
     private final UserService userService;
 
     @PostMapping
-    public Response<UserDTO> addOrUpdateUser(@RequestBody UserDTO userDTO) {
-        userService.addOrUpdateUser(userDTO);
+    public Response<UserDTO> addUser(@RequestBody UserDTO userDTO) {
+        userService.addUser(userDTO);
         return new Response<>("ok",userDTO);
     }
+
+
 
 }

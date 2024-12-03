@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class    ErrorRegisterResponse {
+public class ErrorRegisterResponse {
     private String email;
 }
