@@ -16,6 +16,7 @@ public class ProductDTO extends AbstractDTO {
     private List<String> images;
     private String brandName;
     private String categoryName;
+    private String rating;
     private List<Map<String,String>> attributeList;
 
 }

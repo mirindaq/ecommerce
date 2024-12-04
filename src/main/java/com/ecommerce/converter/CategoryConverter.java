@@ -14,6 +14,7 @@ public class CategoryConverter {
 
     public CategoryDTO fromEntityToDTO(CategoryEntity category) {
         CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setId(category.getId());
         categoryDTO.setName(category.getName());
         categoryDTO.setImage(category.getImage());
         categoryDTO.setListAttribute(category.getAttributeEntities().

@@ -10,6 +10,7 @@ public class BrandDTO {
     private Long id;
     private String name;
     private String description;
+    private String imageUrl;
     private List<Long> categoriesId;
 
 }

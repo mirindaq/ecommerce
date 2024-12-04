@@ -22,6 +22,9 @@ public class BrandEntity {
     @Column
     private String description;
 
+    @Column
+    private String image;
+
     @OneToMany( mappedBy = "brand", fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<ProductEntity> products;

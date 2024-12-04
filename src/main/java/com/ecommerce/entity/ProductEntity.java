@@ -38,6 +38,9 @@ public class    ProductEntity extends BaseEntity {
     @Column
     private boolean active;
 
+    @Column
+    private Double rating;
+
     @OneToMany( mappedBy = "productWishList" , fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<WishListEntity> wishlist;

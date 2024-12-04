@@ -25,9 +25,8 @@ public class ProductAPI {
 
     @GetMapping("/admin/products")
     public Response<ProductResponse> getAllProducts() {
-        List<ProductDTO> dtoList = productService.getAllProducts();
-        ProductResponse response = new ProductResponse();
-        response.setProducts(dtoList);
+        ProductResponse response = productService.getAllProducts();
+
         return new Response<>("success", response);
     }
 
@@ -57,9 +56,7 @@ public class ProductAPI {
 
     @GetMapping("/products")
     public Response<ProductResponse> searchProducts(ProductSearchCriteria criteria) {
-        List<ProductDTO> dtoList = productService.searchProducts(criteria);
-        ProductResponse response = new ProductResponse();
-        response.setProducts(dtoList);
+        ProductResponse response = productService.searchProducts(criteria);
         return new Response<>("success", response);
     }
 

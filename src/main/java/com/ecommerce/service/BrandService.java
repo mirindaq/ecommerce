@@ -11,4 +11,6 @@ public interface BrandService {
     List<BrandDTO> getAllBrands();
 
     BrandDTO getBrandById(Long id);
+
+    List<BrandDTO> getBrandByCategory(String name);
 }

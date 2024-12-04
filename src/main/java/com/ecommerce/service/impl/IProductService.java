@@ -7,6 +7,7 @@ import com.ecommerce.entity.BrandEntity;
 import com.ecommerce.entity.ProductEntity;
 import com.ecommerce.model.dto.ProductDTO;
 import com.ecommerce.model.dto.ProductSearchCriteria;
+import com.ecommerce.model.response.ProductResponse;
 import com.ecommerce.repository.AttributeDetailRepository;
 import com.ecommerce.repository.AttributeRepository;
 import com.ecommerce.repository.ProductRepository;
@@ -39,14 +40,21 @@ public class IProductService implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getAllProducts() {
-        return productRepository.findAll().stream().map(productConverter::fromEntityToDTO).collect(Collectors.toList());
+    public ProductResponse getAllProducts() {
+        ProductResponse response = new ProductResponse();
+        response.setProducts(productRepository.findAll().stream().map(productConverter::fromEntityToDTO).collect(Collectors.toList()));
+        return response ;
     }
 
     @Override
-    public List<ProductDTO> searchProducts(ProductSearchCriteria criteria) {
+    public ProductResponse searchProducts(ProductSearchCriteria criteria) {
         List<ProductEntity> entityList = productRepository.searchProduct(criteria);
-        return entityList.stream().map(productConverter::fromEntityToDTO).collect(Collectors.toList());
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setProducts(entityList.stream().map(productConverter::fromEntityToDTO).collect(Collectors.toList()));
+        productResponse.setPage(criteria.getPage());
+        productResponse.setLimit(criteria.getLimit());
+        productResponse.setTotal(productRepository.countProducts(criteria));
+        return productResponse;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ecommerce.service.impl;
 
+import com.ecommerce.converter.BrandConverter;
 import com.ecommerce.entity.BrandCategoryEntity;
 import com.ecommerce.entity.BrandEntity;
 import com.ecommerce.entity.CategoryEntity;
@@ -65,6 +66,7 @@ public class IBrandService implements BrandService {
                             .id(brandEntity.getId())
                             .name(brandEntity.getName())
                             .description(brandEntity.getDescription())
+                            .imageUrl(brandEntity.getImage())
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -77,7 +79,22 @@ public class IBrandService implements BrandService {
                         .id(brandEntity.getId())
                         .name(brandEntity.getName())
                         .description(brandEntity.getDescription())
+                        .imageUrl(brandEntity.getImage())
                         .build())
                 .orElseThrow(() -> new RuntimeException("Brand not found"));
+    }
+
+    @Override
+    public List<BrandDTO> getBrandByCategory(String name) {
+        return brandRepository.getBrandByCategoryName(name).stream()
+                .map(brandEntity -> {
+                    return BrandDTO.builder()
+                            .id(brandEntity.getId())
+                            .name(brandEntity.getName())
+                            .description(brandEntity.getDescription())
+                            .imageUrl(brandEntity.getImage())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 }

@@ -10,4 +10,8 @@ public class ProductSearchCriteria {
     private Double discount;
     private String brandName;
     private String categoryName;
+    private Integer page;
+    private Integer limit;
+    private String sortBy;
+    private String sortOrder;
 }
