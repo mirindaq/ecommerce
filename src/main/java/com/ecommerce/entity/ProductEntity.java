@@ -29,11 +29,9 @@ public class    ProductEntity extends BaseEntity {
     @Column
     private Double discount;
 
-    @Column
+    @Column( columnDefinition = "LONGTEXT")
     private String description;
 
-    @Column
-    private String image;
 
     @Column
     private boolean active;

@@ -7,6 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AttributeRepository extends JpaRepository<AttributeEntity, Long> {
-    Optional<AttributeEntity> findByName(String name);
-    List<AttributeEntity> findByNameIn( List<String> name);
+    Optional<AttributeEntity> findByNameAndCategory_Name(String name, String category);
 }

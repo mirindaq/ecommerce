@@ -18,11 +18,6 @@ public class AttributeEntity {
     @Column
     private String name;
 
-    @OneToMany( mappedBy = "attribute", fetch = FetchType.LAZY,
-            cascade = { CascadeType.MERGE, CascadeType.PERSIST},
-            orphanRemoval = true)
-    private List<AttributeDetailEntity> detailEntityList;
-
     @ManyToOne
     private CategoryEntity category;
 }
