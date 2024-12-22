@@ -18,6 +18,8 @@ public class UserConverter {
     }
 
     public UserDTO fromEntityToDTO(UserEntity userEntity) {
+        UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
+        userDTO.setId(userEntity.getRole().getId());
         return modelMapper.map(userEntity, UserDTO.class);
     }
 

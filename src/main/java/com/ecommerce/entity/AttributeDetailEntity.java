@@ -18,7 +18,7 @@ public class AttributeDetailEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private ProductEntity productAttribute;
+    private ProductEntity product;
 
     @ManyToOne
     @JoinColumn(name = "attribute_id")

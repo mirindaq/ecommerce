@@ -25,10 +25,12 @@ public class BrandAPI {
     }
 
     @GetMapping("/admin/brands")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<BrandDTO>> getAllBrands() {
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    public Response<Map<String, List<BrandDTO>>> getAllBrands() {
         List<BrandDTO> brands = brandService.getAllBrands();
-        return ResponseEntity.ok(brands);
+        Map<String, List<BrandDTO>> map = new HashMap<>();
+        map.put("brands", brands);
+        return new Response<>("success", map);
     }
 
     @GetMapping("/admin/brands/{id}")

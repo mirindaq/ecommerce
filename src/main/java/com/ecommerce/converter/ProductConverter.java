@@ -1,19 +1,19 @@
 package com.ecommerce.converter;
 
 import com.ecommerce.entity.*;
+import com.ecommerce.model.dto.AttributeDTO;
+import com.ecommerce.model.dto.ProductAddDTO;
 import com.ecommerce.model.dto.ProductDTO;
-import com.ecommerce.repository.AttributeDetailRepository;
-import com.ecommerce.repository.AttributeRepository;
-import com.ecommerce.repository.BrandRepository;
-import com.ecommerce.repository.CategoryRepository;
+import com.ecommerce.repository.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,10 +24,21 @@ public class ProductConverter {
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
     private final AttributeRepository attributeRepository;
-    private final AttributeDetailRepository attributeDetailRepository;
+    private final ProductRepository productRepository;
 
-    public ProductEntity fromDTOToEntity(ProductDTO dto) {
-        ProductEntity productEntity = modelMapper.map(dto, ProductEntity.class);
+    public ProductEntity fromAddDTOToEntity(ProductAddDTO dto) {
+        ProductEntity productEntity;
+
+        if ( dto.getId() == null ){
+            productEntity = modelMapper.map(dto, ProductEntity.class);
+        }else {
+            productEntity = productRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Product not found"));
+            productEntity.setDescription(dto.getDescription());
+            productEntity.setPrice(dto.getPrice());
+            productEntity.setDiscount(dto.getDiscount());
+            productEntity.setName(dto.getName());
+            productEntity.setStock(dto.getStock());
+        }
 
         //set brand
         BrandEntity brand = brandRepository.findByName(dto.getBrandName())
@@ -40,35 +51,19 @@ public class ProductConverter {
         productEntity.setCategory(category);
         productEntity.setActive(true);
 
-        //set imageList
-        List<ProductImageEntity> images = new ArrayList<>();
-        int check = 0;
-        for ( String image : dto.getImages()) {
-            ProductImageEntity imageEntity = new ProductImageEntity();
-            imageEntity.setUrl(image);
-            imageEntity.setProduct(productEntity);
-            if ( check == 0 ) {
-                imageEntity.setMain(true);
-                check = 1;
-            }
-            else imageEntity.setMain(false);
-            images.add(imageEntity);
-        }
-        productEntity.setProductImageEntityList(images);
-
         //set detail list
         List<AttributeDetailEntity> detailEntityList = new ArrayList<>();
-        for (Map<String, String> map : dto.getAttributeList()) {
-            String name = map.get("name");
-            String value = map.get("value");
+        for ( AttributeDTO map : dto.getAttributes()) {
+            String name = map.getName();
+            String value = map.getValue();
 
-            AttributeEntity attribute = attributeRepository.findByName(name)
+            AttributeEntity attribute = attributeRepository.findByNameAndCategory_Name(name, dto.getCategoryName())
                     .orElseThrow(() -> new RuntimeException("Attribute not found"));
 
             AttributeDetailEntity attributeDetailEntity = new AttributeDetailEntity();
             attributeDetailEntity.setValue(value);
             attributeDetailEntity.setAttribute(attribute);
-            attributeDetailEntity.setProductAttribute(productEntity);
+            attributeDetailEntity.setProduct(productEntity);
 
             detailEntityList.add(attributeDetailEntity);
         }
@@ -100,17 +95,17 @@ public class ProductConverter {
         }
 
         if (entity.getAttributeList() != null) {
-            List<Map<String, String>> attributes = entity.getAttributeList().stream()
+            List<AttributeDTO> attributes = entity.getAttributeList().stream()
                     .map(attributeDetail -> {
-                        Map<String, String> attributeMap = Map.of(
-                                "name", attributeDetail.getAttribute().getName(),
-                                "value", attributeDetail.getValue()
-                        );
-                        return attributeMap;
+                        AttributeDTO attributeDTO = new AttributeDTO();
+                        attributeDTO.setName(attributeDetail.getAttribute().getName());
+                        attributeDTO.setValue(attributeDetail.getValue()); // Cài đặt value từ chi tiết thuộc tính
+                        return attributeDTO; // Trả về đối tượng AttributeDTO
                     })
-                    .collect(Collectors.toList());
-            productDTO.setAttributeList(attributes);
+                    .collect(Collectors.toList()); // Thu thập kết quả thành danh sách
+            productDTO.setAttributeList(attributes); // Đặt vào list thuộc tính trong ProductDTO
         }
+
 
         return productDTO;
     }

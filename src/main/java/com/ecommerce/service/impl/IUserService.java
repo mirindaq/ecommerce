@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class IUserService implements UserService {
@@ -56,6 +59,16 @@ public class IUserService implements UserService {
         UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
         if ( userEntity == null) return null;
         return userEntity;
+    }
+
+    @Override
+    public List<UserDTO> findAllUsersByNames( List<String> names) {
+        List<UserEntity> userEntities = userRepository.findAllByRoleName(names);
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (UserEntity userEntity : userEntities) {
+            userDTOs.add(userConverter.fromEntityToDTO(userEntity));
+        }
+        return userDTOs;
     }
 
     @Override

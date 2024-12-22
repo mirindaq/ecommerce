@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "products")
-public class    ProductEntity extends BaseEntity {
+public class  ProductEntity extends BaseEntity {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -29,11 +29,9 @@ public class    ProductEntity extends BaseEntity {
     @Column
     private Double discount;
 
-    @Column
+    @Column( columnDefinition = "LONGTEXT")
     private String description;
 
-    @Column
-    private String image;
 
     @Column
     private boolean active;
@@ -66,14 +64,11 @@ public class    ProductEntity extends BaseEntity {
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    @OneToMany(mappedBy = "productAttribute", fetch = FetchType.LAZY,
-            cascade = { CascadeType.MERGE, CascadeType.PERSIST},
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     private List<AttributeDetailEntity> attributeList;
 
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImageEntity> productImageEntityList;
-
-
+    @OneToMany(mappedBy = "product", cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    private List<ProductImageEntity> productImageEntityList = new ArrayList<>();
 }
